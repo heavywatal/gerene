@@ -31,7 +31,7 @@ class Program {
     //! options description for Program class
     boost::program_options::options_description options_desc();
     //! print help message and exit
-    void help_and_exit();
+    [[noreturn]] void help_and_exit();
 
     //! number of threads
     unsigned int concurrency_ = 1;

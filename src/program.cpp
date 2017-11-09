@@ -49,7 +49,7 @@ po::options_description Program::options_desc() {HERE;
     return description;
 }
 
-void Program::help_and_exit() {HERE;
+[[noreturn]] void Program::help_and_exit() {HERE;
     auto description = general_desc();
     description.add(options_desc());
     // do not print positional arguments as options
@@ -110,7 +110,7 @@ void Program::main() {HERE;
     if (is_writing_) {
         DCERR("mkdir && cd to " << out_dir_ << std::endl);
         wtl::ChDir cd_outdir(out_dir_, true);
-        wtl::opfstream{"program_options.conf"} << config_string_;
+        wtl::make_ofs("program_options.conf") << config_string_;
         std::cerr << wtl::iso8601datetime() << std::endl;
     }
 }
