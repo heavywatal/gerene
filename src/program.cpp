@@ -5,6 +5,7 @@
 #include "program.hpp"
 #include "population.hpp"
 #include "individual.hpp"
+#include "gene.hpp"
 
 #include <wtl/exception.hpp>
 #include <wtl/debug.hpp>
@@ -64,6 +65,7 @@ inline void test(const int flg) {HERE;
       case 0:
         break;
       case 1:
+        Gene::test();
         Individual::test();
         Population::test();
         throw wtl::ExitSuccess();
@@ -105,7 +107,7 @@ void Program::run() {HERE;
 }
 
 void Program::main() {HERE;
-    Population pop;
+    Population pop(6);
     std::cout << pop << std::endl;
     if (is_writing_) {
         DCERR("mkdir && cd to " << out_dir_ << std::endl);

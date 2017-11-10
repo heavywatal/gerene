@@ -6,10 +6,14 @@
 #define GRN_INDIVIDUAL_HPP_
 
 #include <iosfwd>
+#include <vector>
+#include <memory>
 
 #include <boost/program_options.hpp>
 
 namespace grn {
+
+class Gene;
 
 /*! @brief Individual class
 */
@@ -24,6 +28,7 @@ class Individual {
     static void test();
 
   private:
+    std::vector<std::shared_ptr<Gene>> genes_;
 };
 
 } // namespace grn

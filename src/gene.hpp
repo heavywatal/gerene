@@ -6,6 +6,7 @@
 #define GRN_GENE_HPP_
 
 #include <iosfwd>
+#include <unordered_map>
 
 #include <boost/program_options.hpp>
 
@@ -24,6 +25,8 @@ class Gene {
     static void test();
 
   private:
+    std::unordered_map<unsigned int, double> cis_;
+    std::unordered_map<unsigned int, double> cod_;
 };
 
 } // namespace grn

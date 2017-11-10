@@ -2,7 +2,6 @@
     @brief Implementation of Population class
 */
 #include "population.hpp"
-#include "individual.hpp"
 
 #include <wtl/debug.hpp>
 #include <wtl/iostr.hpp>
@@ -22,14 +21,18 @@ namespace grn {
 */
 boost::program_options::options_description Population::options_desc() {
     namespace po = boost::program_options;
-    po::options_description desc{"Individual"};
+    po::options_description desc{"Population"};
     desc.add_options()
     ;
     return desc;
 }
 
+Population::Population(const size_t n)
+: individuals_(n) {HERE;
+}
+
 std::ostream& Population::write(std::ostream& ost) const {HERE;
-    return ost;
+    return ost << individuals_;
 }
 
 //! shortcut Population::write(ost)

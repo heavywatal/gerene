@@ -2,6 +2,7 @@
     @brief Implementation of Individual class
 */
 #include "individual.hpp"
+#include "gene.hpp"
 
 #include <wtl/debug.hpp>
 #include <wtl/iostr.hpp>
@@ -28,7 +29,7 @@ boost::program_options::options_description Individual::options_desc() {
 }
 
 std::ostream& Individual::write(std::ostream& ost) const {
-    return ost;
+    return ost << genes_;
 }
 
 //! shortcut Individual::write(ost)

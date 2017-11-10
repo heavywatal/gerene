@@ -5,7 +5,10 @@
 #ifndef GRN_POPULATION_HPP_
 #define GRN_POPULATION_HPP_
 
+#include "individual.hpp"
+
 #include <iosfwd>
+#include <vector>
 
 #include <boost/program_options.hpp>
 
@@ -15,6 +18,10 @@ namespace grn {
 */
 class Population {
   public:
+    //! default constructor
+    Population() = default;
+    Population(const size_t);
+
     //! write
     std::ostream& write(std::ostream&) const;
     friend std::ostream& operator<<(std::ostream&, const Population&);
@@ -24,6 +31,7 @@ class Population {
     static void test();
 
   private:
+    std::vector<Individual> individuals_;
 };
 
 } // namespace grn
