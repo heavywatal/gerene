@@ -16,6 +16,11 @@ namespace grn {
 */
 class Gene {
   public:
+    //! regulatory gene
+    Gene();
+    //! phenotypic gene
+    Gene(const std::vector<unsigned int>& coding_funcs);
+
     //! write
     std::ostream& write(std::ostream&) const;
     friend std::ostream& operator<<(std::ostream&, const Gene&);

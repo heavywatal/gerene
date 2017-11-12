@@ -19,6 +19,7 @@ class Gene;
 */
 class Individual {
   public:
+    Individual();
     //! write
     std::ostream& write(std::ostream&) const;
     friend std::ostream& operator<<(std::ostream&, const Individual&);

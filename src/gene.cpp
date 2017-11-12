@@ -27,6 +27,12 @@ boost::program_options::options_description Gene::options_desc() {
     return desc;
 }
 
+Gene::Gene() {
+}
+
+Gene::Gene(const std::vector<unsigned int>& coding_funcs) {
+}
+
 std::ostream& Gene::write(std::ostream& ost) const {
     return ost << std::make_pair(cis_, cod_);
 }
