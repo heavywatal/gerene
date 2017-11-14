@@ -47,6 +47,7 @@ po::options_description Program::options_desc() {HERE;
       ("outdir,o", po::value(&out_dir_)->default_value(out_dir_));
     // description.add(Population::options_desc());
     description.add(Individual::options_desc());
+    description.add(Gene::options_desc());
     return description;
 }
 

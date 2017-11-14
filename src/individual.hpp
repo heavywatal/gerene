@@ -29,6 +29,8 @@ class Individual {
     static void test();
 
   private:
+    static size_t NUM_GENES_;
+
     std::vector<std::shared_ptr<Gene>> genes_;
 };
 

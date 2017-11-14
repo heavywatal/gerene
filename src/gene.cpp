@@ -25,7 +25,7 @@ boost::program_options::options_description Gene::options_desc() {
     namespace po = boost::program_options;
     po::options_description desc{"Gene"};
     desc.add_options()
-      ("num_cres,L", po::value(&NUM_CRES_)->default_value(NUM_CRES_))
+      ("cres,L", po::value(&NUM_CRES_)->default_value(NUM_CRES_))
     ;
     return desc;
 }

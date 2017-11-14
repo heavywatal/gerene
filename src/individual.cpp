@@ -13,6 +13,8 @@
 
 namespace grn {
 
+size_t Individual::NUM_GENES_ = 20u;
+
 //! Program options
 /*! @ingroup params
     @return Program options description
@@ -24,18 +26,18 @@ boost::program_options::options_description Individual::options_desc() {
     namespace po = boost::program_options;
     po::options_description desc{"Individual"};
     desc.add_options()
+      ("genes,V", po::value(&NUM_GENES_)->default_value(NUM_GENES_))
     ;
     return desc;
 }
 
 Individual::Individual() {
-    const size_t num_genes = 6u;
     const size_t dimensions = 2u;
-    genes_.reserve(num_genes);
+    genes_.reserve(NUM_GENES_);
     for (size_t i=0; i<dimensions; ++i) {
         genes_.emplace_back(std::make_shared<Gene>(std::vector<unsigned int>{0u}));
     }
-    for (size_t i=dimensions; i<num_genes; ++i) {
+    for (size_t i=dimensions; i<NUM_GENES_; ++i) {
         genes_.emplace_back(std::make_shared<Gene>());
     }
 }
