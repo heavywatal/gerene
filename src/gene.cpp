@@ -12,6 +12,8 @@
 
 namespace grn {
 
+size_t Gene::NUM_CRES_ = 20u;
+
 //! Program options
 /*! @ingroup params
     @return Program options description
@@ -23,14 +25,31 @@ boost::program_options::options_description Gene::options_desc() {
     namespace po = boost::program_options;
     po::options_description desc{"Gene"};
     desc.add_options()
+      ("num_cres,L", po::value(&NUM_CRES_)->default_value(NUM_CRES_))
     ;
     return desc;
 }
 
 Gene::Gene() {
+    cis_.reserve(NUM_CRES_);
+    for (size_t i=0; i<NUM_CRES_; ++i) {
+        cis_.emplace(wtl::sfmt()(), wtl::sfmt().canonical());
+    }
+    cod_.reserve(NUM_FUNCTIONS_);
+    for (size_t i=0; i<NUM_FUNCTIONS_; ++i) {
+        cod_.emplace(wtl::sfmt()(), wtl::sfmt().canonical());
+    }
 }
 
 Gene::Gene(const std::vector<unsigned int>& coding_funcs) {
+    cis_.reserve(NUM_CRES_);
+    for (size_t i=0; i<NUM_CRES_; ++i) {
+        cis_.emplace(wtl::sfmt()(), wtl::sfmt().canonical());
+    }
+    cod_.reserve(coding_funcs.size());
+    for (const auto x: coding_funcs) {
+        cod_.emplace(x, wtl::sfmt().canonical());
+    }
 }
 
 std::ostream& Gene::write(std::ostream& ost) const {

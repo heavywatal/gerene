@@ -30,6 +30,9 @@ class Gene {
     static void test();
 
   private:
+    static size_t NUM_CRES_;
+    static constexpr size_t NUM_FUNCTIONS_ = 1u;
+
     std::unordered_map<unsigned int, double> cis_;
     std::unordered_map<unsigned int, double> cod_;
 };

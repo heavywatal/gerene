@@ -36,12 +36,15 @@ Individual::Individual() {
         genes_.emplace_back(std::make_shared<Gene>(std::vector<unsigned int>{0u}));
     }
     for (size_t i=dimensions; i<num_genes; ++i) {
-        genes_.emplace_back();
+        genes_.emplace_back(std::make_shared<Gene>());
     }
 }
 
 std::ostream& Individual::write(std::ostream& ost) const {
-    return ost << genes_;
+    for (const auto& g: genes_) {
+        ost << *g << "\t";
+    }
+    return ost;
 }
 
 //! shortcut Individual::write(ost)
