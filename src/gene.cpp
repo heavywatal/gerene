@@ -5,7 +5,7 @@
 
 #include <wtl/debug.hpp>
 #include <wtl/iostr.hpp>
-#include <wtl/prandom.hpp>
+#include <wtl/random.hpp>
 #include <sfmt.hpp>
 
 #include <iostream>
@@ -33,22 +33,22 @@ boost::program_options::options_description Gene::options_desc() {
 Gene::Gene() {
     cis_.reserve(NUM_CRES_);
     for (size_t i=0; i<NUM_CRES_; ++i) {
-        cis_.emplace(wtl::sfmt()(), wtl::sfmt().canonical());
+        cis_.emplace(wtl::sfmt()(), wtl::generate_canonical(wtl::sfmt()));
     }
     cod_.reserve(NUM_FUNCTIONS_);
     for (size_t i=0; i<NUM_FUNCTIONS_; ++i) {
-        cod_.emplace(wtl::sfmt()(), wtl::sfmt().canonical());
+        cod_.emplace(wtl::sfmt()(), wtl::generate_canonical(wtl::sfmt()));
     }
 }
 
 Gene::Gene(const std::vector<unsigned int>& coding_funcs) {
     cis_.reserve(NUM_CRES_);
     for (size_t i=0; i<NUM_CRES_; ++i) {
-        cis_.emplace(wtl::sfmt()(), wtl::sfmt().canonical());
+        cis_.emplace(wtl::sfmt()(), wtl::generate_canonical(wtl::sfmt()));
     }
     cod_.reserve(coding_funcs.size());
     for (const auto x: coding_funcs) {
-        cod_.emplace(x, wtl::sfmt().canonical());
+        cod_.emplace(x, wtl::generate_canonical(wtl::sfmt()));
     }
 }
 
