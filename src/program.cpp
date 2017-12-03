@@ -56,7 +56,7 @@ po::options_description Program::options_desc() {HERE;
     auto description = general_desc();
     description.add(options_desc());
     // do not print positional arguments as options
-    std::cout << "Usage: grn [options]\n" << std::endl;
+    std::cout << "Usage: gerene [options]\n" << std::endl;
     description.print(std::cout);
     throw wtl::ExitSuccess();
 }
@@ -82,7 +82,7 @@ Program::Program(const std::vector<std::string>& arguments) {HERE;
     std::cin.tie(0);
     std::cout.precision(15);
     std::cerr.precision(6);
-    out_dir_ = wtl::strftime("thunnus_%Y%m%d_%H%M_") + std::to_string(::getpid());
+    out_dir_ = wtl::strftime("gerene_%Y%m%d_%H%M_") + std::to_string(::getpid());
 
     auto description = general_desc();
     description.add(options_desc());
