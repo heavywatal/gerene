@@ -20,6 +20,7 @@ size_t Gene::NUM_CRES_ = 20u;
 
     Command line option | Symbol         | Variable
     ------------------- | -------------- | -------------------------------
+    `-L,--cres`         | \f$L\f$        | NUM_CRES_
 */
 boost::program_options::options_description Gene::options_desc() {
     namespace po = boost::program_options;

@@ -21,6 +21,7 @@ size_t Individual::NUM_GENES_ = 20u;
 
     Command line option | Symbol         | Variable
     ------------------- | -------------- | -------------------------------
+    `-V,--genes`        | \f$V\f$        | NUM_GENES_
 */
 boost::program_options::options_description Individual::options_desc() {
     namespace po = boost::program_options;
