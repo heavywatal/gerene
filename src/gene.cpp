@@ -34,22 +34,22 @@ boost::program_options::options_description Gene::options_desc() {
 Gene::Gene() {
     cis_.reserve(NUM_CRES_);
     for (size_t i=0; i<NUM_CRES_; ++i) {
-        cis_.emplace(wtl::sfmt()(), wtl::generate_canonical(wtl::sfmt()));
+        cis_.emplace(wtl::sfmt64()(), wtl::generate_canonical(wtl::sfmt64()));
     }
     cod_.reserve(NUM_FUNCTIONS_);
     for (size_t i=0; i<NUM_FUNCTIONS_; ++i) {
-        cod_.emplace(wtl::sfmt()(), wtl::generate_canonical(wtl::sfmt()));
+        cod_.emplace(wtl::sfmt64()(), wtl::generate_canonical(wtl::sfmt64()));
     }
 }
 
 Gene::Gene(const std::vector<unsigned int>& coding_funcs) {
     cis_.reserve(NUM_CRES_);
     for (size_t i=0; i<NUM_CRES_; ++i) {
-        cis_.emplace(wtl::sfmt()(), wtl::generate_canonical(wtl::sfmt()));
+        cis_.emplace(wtl::sfmt64()(), wtl::generate_canonical(wtl::sfmt64()));
     }
     cod_.reserve(coding_funcs.size());
     for (const auto x: coding_funcs) {
-        cod_.emplace(x, wtl::generate_canonical(wtl::sfmt()));
+        cod_.emplace(x, wtl::generate_canonical(wtl::sfmt64()));
     }
 }
 
