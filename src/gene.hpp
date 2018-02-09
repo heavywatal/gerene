@@ -26,8 +26,6 @@ class Gene {
     friend std::ostream& operator<<(std::ostream&, const Gene&);
     //! options description for Gene class
     static boost::program_options::options_description options_desc();
-    //! unit test
-    static void test();
 
   private:
     static size_t NUM_CRES_;

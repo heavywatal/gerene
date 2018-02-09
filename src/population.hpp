@@ -27,8 +27,6 @@ class Population {
     friend std::ostream& operator<<(std::ostream&, const Population&);
     //! options description for Individual class
     static boost::program_options::options_description options_desc();
-    //! unit test
-    static void test();
 
   private:
     std::vector<Individual> individuals_;

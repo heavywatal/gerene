@@ -37,12 +37,36 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 aux_source_directory(src srcfiles)
 message("Source files: ${srcfiles}")
 
-add_executable(${PROJECT_NAME} main.cpp ${srcfiles})
-target_link_libraries(${PROJECT_NAME} wtl sfmt ${Boost_LIBRARIES})
-if(PROFILE)
-  target_link_libraries(${PROJECT_NAME} profiler)
-endif()
-
-install(TARGETS ${PROJECT_NAME}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+add_library(${PROJECT_NAME} SHARED ${srcfiles})
+target_include_directories(${PROJECT_NAME} BEFORE
+  PRIVATE ${Boost_INCLUDE_DIRS}
+  INTERFACE $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src>
 )
+target_link_libraries(${PROJECT_NAME} PRIVATE wtl sfmt ${Boost_LIBRARIES})
+
+add_executable(${PROJECT_NAME}-exe main.cpp)
+target_link_libraries(${PROJECT_NAME}-exe PRIVATE ${PROJECT_NAME})
+if(PROFILE)
+  target_link_libraries(${PROJECT_NAME}-exe PRIVATE profiler)
+endif()
+set_target_properties(${PROJECT_NAME}-exe PROPERTIES
+  OUTPUT_NAME ${PROJECT_NAME}
+)
+
+install(TARGETS ${PROJECT_NAME}-exe ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}-config
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+install(DIRECTORY src/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+  FILES_MATCHING PATTERN "*.hpp")
+install(EXPORT ${PROJECT_NAME}-config
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}
+)
+
+include(CTest)
+if(BUILD_TESTING)
+  add_subdirectory(test)
+endif()

@@ -63,9 +63,4 @@ std::ostream& operator<<(std::ostream& ost, const Gene& x) {
     return x.write(ost);
 }
 
-void Gene::test() {HERE;
-    Gene x;
-    std::cout << x << std::endl;
-}
-
 } // namespace grn

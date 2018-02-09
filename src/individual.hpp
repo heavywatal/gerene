@@ -25,8 +25,6 @@ class Individual {
     friend std::ostream& operator<<(std::ostream&, const Individual&);
     //! options description for Individual class
     static boost::program_options::options_description options_desc();
-    //! unit test
-    static void test();
 
   private:
     static size_t NUM_GENES_;

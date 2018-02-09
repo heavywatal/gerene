@@ -28,9 +28,9 @@ namespace po = boost::program_options;
 inline po::options_description general_desc() {HERE;
     po::options_description description("General");
     description.add_options()
-        ("help,h", po::bool_switch(), "print this help")
-        ("verbose,v", po::bool_switch(), "verbose output")
-        ("test", po::value<int>()->default_value(0)->implicit_value(1));
+      ("help,h", po::bool_switch(), "print this help")
+      ("verbose,v", po::bool_switch(), "verbose output")
+    ;
     return description;
 }
 
@@ -63,21 +63,6 @@ po::options_description Program::options_desc() {HERE;
     throw wtl::ExitSuccess();
 }
 
-//! Unit test for each class
-inline void test(const int flg) {HERE;
-    switch (flg) {
-      case 0:
-        break;
-      case 1:
-        Gene::test();
-        Individual::test();
-        Population::test();
-        throw wtl::ExitSuccess();
-      default:
-        throw std::runtime_error("Unknown argument for --test");
-    }
-}
-
 Program::Program(const std::vector<std::string>& arguments)
 : vars_(std::make_unique<po::variables_map>()) {HERE;
     wtl::join(arguments, std::cout, " ") << std::endl;
@@ -99,7 +84,6 @@ Program::Program(const std::vector<std::string>& arguments)
         std::cerr << wtl::iso8601datetime() << std::endl;
         std::cerr << config_string_ << std::endl;
     }
-    test(vm["test"].as<int>());
 }
 
 Program::~Program() {HERE;}

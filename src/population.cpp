@@ -41,9 +41,4 @@ std::ostream& operator<<(std::ostream& ost, const Population& pop) {
     return pop.write(ost);
 }
 
-void Population::test() {HERE;
-    Population x;
-    std::cout << x << std::endl;
-}
-
 } // namespace grm

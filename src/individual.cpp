@@ -56,9 +56,4 @@ std::ostream& operator<<(std::ostream& ost, const Individual& x) {
     return x.write(ost);
 }
 
-void Individual::test() {HERE;
-    Individual x;
-    std::cout << x << std::endl;
-}
-
 } // namespace grn
