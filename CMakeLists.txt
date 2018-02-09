@@ -14,7 +14,7 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
 else()
   add_definitions(-DNDEBUG)
 endif()
-add_compile_options(-O3 -march=native -Wall -Wextra -Wpedantic)
+add_compile_options(-O3 -march=native -Wall -Wextra -Wpedantic -Weffc++ -Wconversion -Wfloat-equal -Wsign-compare -Wsign-conversion -Wshadow)
 
 find_package(wtl)
 find_package(sfmt)
