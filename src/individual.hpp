@@ -9,7 +9,7 @@
 #include <vector>
 #include <memory>
 
-#include <boost/program_options.hpp>
+namespace boost {namespace program_options {class options_description;}}
 
 namespace grn {
 
