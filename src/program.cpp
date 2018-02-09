@@ -15,6 +15,7 @@
 #include <wtl/getopt.hpp>
 #include <wtl/chrono.hpp>
 #include <sfmt.hpp>
+#include <boost/program_options.hpp>
 
 #include <iostream>
 
@@ -37,15 +38,16 @@ inline po::options_description general_desc() {HERE;
 
     Command line option | Symbol  | Variable
     ------------------- | ------- | -------------------------
-    `-j,--parallel`     |         | Program::concurrency_
-    `-o,--outdir`       |         | Program::out_dir_
+    `-j,--parallel`     |         |
+    `-o,--outdir`       |         |
 */
 po::options_description Program::options_desc() {HERE;
+    const std::string outdir = wtl::strftime("gerene_%Y%m%d_%H%M%S");
     po::options_description description("Program");
     description.add_options()
-      ("parallel,j", po::value(&concurrency_)->default_value(concurrency_))
-      ("write,w", po::bool_switch(&is_writing_))
-      ("outdir,o", po::value(&out_dir_)->default_value(out_dir_));
+      ("parallel,j", po::value<unsigned int>()->default_value(1u))
+      ("outdir,o", po::value<std::string>()->default_value("")->implicit_value(outdir))
+    ;
     // description.add(Population::options_desc());
     description.add(Individual::options_desc());
     description.add(Gene::options_desc());
@@ -76,17 +78,17 @@ inline void test(const int flg) {HERE;
     }
 }
 
-Program::Program(const std::vector<std::string>& arguments) {HERE;
+Program::Program(const std::vector<std::string>& arguments)
+: vars_(std::make_unique<po::variables_map>()) {HERE;
     wtl::join(arguments, std::cout, " ") << std::endl;
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     std::cout.precision(15);
     std::cerr.precision(6);
-    out_dir_ = wtl::strftime("gerene_%Y%m%d_%H%M_") + std::to_string(::getpid());
 
     auto description = general_desc();
     description.add(options_desc());
-    po::variables_map vm;
+    auto& vm = *vars_;
     po::store(po::command_line_parser({arguments.begin() + 1, arguments.end()}).
               options(description).run(), vm);
     if (vm["help"].as<bool>()) {help_and_exit();}
@@ -100,6 +102,8 @@ Program::Program(const std::vector<std::string>& arguments) {HERE;
     test(vm["test"].as<int>());
 }
 
+Program::~Program() {HERE;}
+
 void Program::run() {HERE;
     try {
         main();
@@ -109,11 +113,13 @@ void Program::run() {HERE;
 }
 
 void Program::main() {HERE;
+    auto& vm = *vars_;
     Population pop(6);
     std::cout << pop << std::endl;
-    if (is_writing_) {
-        DCERR("mkdir && cd to " << out_dir_ << std::endl);
-        wtl::ChDir cd_outdir(out_dir_, true);
+    const auto outdir = vm["outdir"].as<std::string>();
+    if (!outdir.empty()) {
+        DCERR("mkdir && cd to " << outdir << std::endl);
+        wtl::ChDir cd_outdir(outdir, true);
         wtl::make_ofs("program_options.conf") << config_string_;
         std::cerr << wtl::iso8601datetime() << std::endl;
     }

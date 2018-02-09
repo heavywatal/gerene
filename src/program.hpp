@@ -7,8 +7,12 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
-#include <boost/program_options.hpp>
+namespace boost {namespace program_options {
+  class options_description;
+  class variables_map;
+}}
 
 namespace grn {
 
@@ -21,6 +25,8 @@ class Program {
     //! parse command arguments
     Program(int argc, char* argv[])
     : Program(std::vector<std::string>(argv, argv + argc)) {}
+    //! non-default destructor for forward declaration
+    ~Program();
 
     //! top level function that should be called once from global main
     void run();
@@ -28,17 +34,12 @@ class Program {
   private:
     //! called from run()
     void main();
-    //! options description for Program class
-    boost::program_options::options_description options_desc();
     //! print help message and exit
     [[noreturn]] void help_and_exit();
-
-    //! number of threads
-    unsigned int concurrency_ = 1;
-    //! `-w`
-    bool is_writing_ = false;
-    //! name of output directory
-    std::string out_dir_ = "";
+    //! options description for Program class
+    boost::program_options::options_description options_desc();
+    //! optional variables
+    std::unique_ptr<boost::program_options::variables_map> vars_;
     //! writen to "program_options.conf"
     std::string config_string_;
 };
