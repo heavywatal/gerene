@@ -5,41 +5,37 @@ include(GNUInstallDirs)
 option(PROFILE "Use gperftools" FALSE)
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
-set(CMAKE_CXX_EXTENSIONS FALSE)
-
-if(CMAKE_BUILD_TYPE MATCHES Debug)
-  add_compile_options(-g)
-else()
-  add_definitions(-DNDEBUG)
-endif()
-add_compile_options(-O3 -march=native -Wall -Wextra -Wpedantic -Weffc++ -Wconversion -Wfloat-equal -Wsign-compare -Wsign-conversion -Wshadow)
+set(Boost_NO_BOOST_CMAKE TRUE)
+find_package(Boost REQUIRED COMPONENTS program_options filesystem iostreams system)
+message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 
 find_package(wtl)
 find_package(sfmt)
 
-set(Boost_NO_BOOST_CMAKE TRUE)
-find_package(Boost REQUIRED COMPONENTS program_options iostreams filesystem system)
-include_directories(${Boost_INCLUDE_DIRS})
-link_directories(${Boost_LIBRARY_DIRS})
-message("Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
-message("Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_EXTENSIONS FALSE)
+add_compile_options(-march=native -Wall -Wextra -Wpedantic)
 
-message("CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
+if (NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+set(CMAKE_CXX_FLAGS_DEV "-O2 -g")
+
+message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 if(${CMAKE_INSTALL_PREFIX} MATCHES linuxbrew)
   set(CMAKE_INSTALL_LIBDIR lib)
 endif()
 
+set(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-aux_source_directory(src srcfiles)
-message("Source files: ${srcfiles}")
+add_subdirectory(src)
 
-add_library(${PROJECT_NAME} SHARED ${srcfiles})
+add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:obj>)
 target_include_directories(${PROJECT_NAME} BEFORE
-  PRIVATE ${Boost_INCLUDE_DIRS}
   INTERFACE $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src>
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE wtl sfmt ${Boost_LIBRARIES})
