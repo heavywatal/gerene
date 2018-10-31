@@ -21,7 +21,7 @@
 
 namespace grn {
 
-namespace fs = boost::filesystem;
+namespace fs = wtl::filesystem;
 namespace po = boost::program_options;
 
 //! options description for general arguments
