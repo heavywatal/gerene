@@ -19,7 +19,7 @@ class Program {
     Program(const std::vector<std::string>& args);
     //! parse command arguments
     Program(int argc, char* argv[])
-    : Program(std::vector<std::string>(argv, argv + argc)) {}
+    : Program(std::vector<std::string>(argv + 1, argv + argc)) {}
     //! non-default destructor for forward declaration
     ~Program();
 

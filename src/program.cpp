@@ -6,6 +6,7 @@
 #include "population.hpp"
 #include "individual.hpp"
 #include "gene.hpp"
+#include "config.hpp"
 
 #include <wtl/exception.hpp>
 #include <wtl/debug.hpp>
@@ -94,12 +95,12 @@ Program::Program(const std::vector<std::string>& arguments) {HERE;
     wtl::parse(cli, arguments);
     auto fmt = wtl::doc_format();
     if (vm_local.at("help")) {
-        std::cout << "Usage: " << "gerene" << " [options]\n\n";
+        std::cout << "Usage: " << PROJECT_NAME << " [options]\n\n";
         std::cout << clipp::documentation(cli, fmt) << "\n";
         throw wtl::ExitSuccess();
     }
     if (vm_local.at("version")) {
-        std::cout << "0.1.0" << "\n";
+        std::cout << PROJECT_VERSION << "\n";
         throw wtl::ExitSuccess();
     }
 
