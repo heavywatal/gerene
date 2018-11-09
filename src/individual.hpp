@@ -9,25 +9,37 @@
 #include <vector>
 #include <memory>
 
-namespace boost {namespace program_options {class options_description;}}
-
 namespace grn {
 
 class Gene;
+
+//! @brief Parameters for Individual class
+/*! @ingroup params
+*/
+struct IndividualParams {
+    //! Number of genes
+    unsigned NUM_GENES = 20u;
+};
 
 /*! @brief Individual class
 */
 class Individual {
   public:
+    //! Alias
+    using param_type = IndividualParams;
     Individual();
     //! write
     std::ostream& write(std::ostream&) const;
     friend std::ostream& operator<<(std::ostream&, const Individual&);
-    //! options description for Individual class
-    static boost::program_options::options_description options_desc();
+
+    //! Set #PARAM_
+    static void param(const param_type& p);
+    //! Get #PARAM_
+    static const param_type& param() {return PARAM_;}
 
   private:
-    static size_t NUM_GENES_;
+    //! Parameters shared among instances
+    static param_type PARAM_;
 
     std::vector<std::shared_ptr<Gene>> genes_;
 };

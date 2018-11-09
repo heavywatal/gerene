@@ -8,14 +8,22 @@
 #include <iosfwd>
 #include <unordered_map>
 
-namespace boost {namespace program_options {class options_description;}}
-
 namespace grn {
+
+//! @brief Parameters for Gene class
+/*! @ingroup params
+*/
+struct GeneParams {
+    //! Number of cis-regulatory elements
+    unsigned NUM_CRES = 20u;
+};
 
 /*! @brief Gene class
 */
 class Gene {
   public:
+    //! Alias
+    using param_type = GeneParams;
     //! regulatory gene
     Gene();
     //! phenotypic gene
@@ -24,11 +32,16 @@ class Gene {
     //! write
     std::ostream& write(std::ostream&) const;
     friend std::ostream& operator<<(std::ostream&, const Gene&);
-    //! options description for Gene class
-    static boost::program_options::options_description options_desc();
+
+    //! Set #PARAM_
+    static void param(const param_type& p);
+    //! Get #PARAM_
+    static const param_type& param() {return PARAM_;}
 
   private:
-    static size_t NUM_CRES_;
+    //! Parameters shared among instances
+    static param_type PARAM_;
+
     static constexpr size_t NUM_FUNCTIONS_ = 1u;
 
     std::unordered_map<unsigned int, double> cis_;

@@ -10,8 +10,6 @@
 #include <iosfwd>
 #include <vector>
 
-namespace boost {namespace program_options {class options_description;}}
-
 namespace grn {
 
 /*! @brief Population class
@@ -25,8 +23,6 @@ class Population {
     //! write
     std::ostream& write(std::ostream&) const;
     friend std::ostream& operator<<(std::ostream&, const Population&);
-    //! options description for Individual class
-    static boost::program_options::options_description options_desc();
 
   private:
     std::vector<Individual> individuals_;

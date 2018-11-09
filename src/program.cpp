@@ -10,28 +10,27 @@
 #include <wtl/exception.hpp>
 #include <wtl/debug.hpp>
 #include <wtl/iostr.hpp>
-#include <wtl/zfstream.hpp>
-#include <wtl/filesystem.hpp>
-#include <wtl/getopt.hpp>
 #include <wtl/chrono.hpp>
+#include <wtl/filesystem.hpp>
+#include <wtl/zlib.hpp>
 #include <sfmt.hpp>
-#include <boost/program_options.hpp>
+#include <clippson/clippson.hpp>
 
 #include <iostream>
 
 namespace grn {
 
 namespace fs = wtl::filesystem;
-namespace po = boost::program_options;
 
-//! options description for general arguments
-inline po::options_description general_desc() {HERE;
-    po::options_description description("General");
-    description.add_options()
-      ("help,h", po::bool_switch(), "print this help")
-      ("verbose,v", po::bool_switch(), "verbose output")
-    ;
-    return description;
+nlohmann::json VM;
+
+//! Options description for general purpose
+inline clipp::group general_options(nlohmann::json* vm) {HERE;
+    return (
+      wtl::option(vm, {"h", "help"}, false, "print this help"),
+      wtl::option(vm, {"version"}, false, "print version"),
+      wtl::option(vm, {"v", "verbose"}, false, "verbose output")
+    ).doc("General:");
 }
 
 /*! @ingroup params
@@ -41,48 +40,73 @@ inline po::options_description general_desc() {HERE;
     `-j,--parallel`     |         |
     `-o,--outdir`       |         |
 */
-po::options_description Program::options_desc() {HERE;
-    const std::string outdir = wtl::strftime("gerene_%Y%m%d_%H%M%S");
-    po::options_description description("Program");
-    description.add_options()
-      ("parallel,j", po::value<unsigned int>()->default_value(1u))
-      ("outdir,o", po::value<std::string>()->default_value("")->implicit_value(outdir))
-    ;
-    // description.add(Population::options_desc());
-    description.add(Individual::options_desc());
-    description.add(Gene::options_desc());
-    return description;
+
+//! Options description for general purpose
+inline clipp::group program_options(nlohmann::json* vm) {HERE;
+    return (
+      wtl::option(vm, {"j", "parallel"}, 1u),
+      wtl::option(vm, {"o", "outdir"}, "")
+    ).doc("General:");
 }
 
-[[noreturn]] void Program::help_and_exit() {HERE;
-    auto description = general_desc();
-    description.add(options_desc());
-    // do not print positional arguments as options
-    std::cout << "Usage: gerene [options]\n" << std::endl;
-    description.print(std::cout);
-    throw wtl::ExitSuccess();
+//! Program options
+/*! @ingroup params
+
+    Command line option | Symbol         | Variable
+    ------------------- | -------------- | -------------------------------
+    `-V,--genes`        | \f$V\f$        | NUM_GENES_
+*/
+inline clipp::group individual_options(nlohmann::json* vm, IndividualParams* p) {HERE;
+    return (
+      wtl::option(vm, {"V", "genes"}, &p->NUM_GENES)
+    ).doc("Individual");
 }
 
-Program::Program(const std::vector<std::string>& arguments)
-: vars_(std::make_unique<po::variables_map>()) {HERE;
+//! Program options
+/*! @ingroup params
+
+    Command line option | Symbol         | Variable
+    ------------------- | -------------- | -------------------------------
+    `-L,--cres`         | \f$L\f$        | NUM_CRES_
+*/
+inline clipp::group gene_options(nlohmann::json* vm, GeneParams* p) {HERE;
+    return (
+      wtl::option(vm, {"L", "cres"}, &p->NUM_CRES)
+    ).doc("Gene");
+}
+
+Program::Program(const std::vector<std::string>& arguments) {HERE;
     wtl::join(arguments, std::cout, " ") << std::endl;
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
     std::cout.precision(15);
     std::cerr.precision(6);
 
-    auto description = general_desc();
-    description.add(options_desc());
-    auto& vm = *vars_;
-    po::store(po::command_line_parser({arguments.begin() + 1, arguments.end()}).
-              options(description).run(), vm);
-    if (vm["help"].as<bool>()) {help_and_exit();}
-    po::notify(vm);
+    nlohmann::json vm_local;
+    IndividualParams individual_params;
+    GeneParams gene_params;
+    auto cli = (
+      general_options(&vm_local),
+      program_options(&VM),
+      individual_options(&VM, &individual_params),
+      gene_options(&VM, &gene_params)
+    );
+    wtl::parse(cli, arguments);
+    auto fmt = wtl::doc_format();
+    if (vm_local.at("help")) {
+        std::cout << "Usage: " << "gerene" << " [options]\n\n";
+        std::cout << clipp::documentation(cli, fmt) << "\n";
+        throw wtl::ExitSuccess();
+    }
+    if (vm_local.at("version")) {
+        std::cout << "0.1.0" << "\n";
+        throw wtl::ExitSuccess();
+    }
 
-    config_string_ = wtl::flags_into_string(vm);
-    if (vm["verbose"].as<bool>()) {
+    config_ = VM.dump(2) + "\n";
+    if (vm_local.at("verbose")) {
         std::cerr << wtl::iso8601datetime() << std::endl;
-        std::cerr << config_string_ << std::endl;
+        std::cerr << config_ << std::endl;
     }
 }
 
@@ -97,14 +121,13 @@ void Program::run() {HERE;
 }
 
 void Program::main() {HERE;
-    auto& vm = *vars_;
     Population pop(6);
     std::cout << pop << std::endl;
-    const auto outdir = vm["outdir"].as<std::string>();
+    const auto outdir = VM.at("outdir").get<std::string>();
     if (!outdir.empty()) {
         DCERR("mkdir && cd to " << outdir << std::endl);
         wtl::ChDir cd_outdir(outdir, true);
-        wtl::make_ofs("program_options.conf") << config_string_;
+        wtl::make_ofs("config.json") << config_;
         std::cerr << wtl::iso8601datetime() << std::endl;
     }
 }

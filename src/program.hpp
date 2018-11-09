@@ -9,11 +9,6 @@
 #include <string>
 #include <memory>
 
-namespace boost {namespace program_options {
-  class options_description;
-  class variables_map;
-}}
-
 namespace grn {
 
 /*! @brief Program class
@@ -34,14 +29,8 @@ class Program {
   private:
     //! called from run()
     void main();
-    //! print help message and exit
-    [[noreturn]] void help_and_exit();
-    //! options description for Program class
-    boost::program_options::options_description options_desc();
-    //! optional variables
-    std::unique_ptr<boost::program_options::variables_map> vars_;
     //! writen to "program_options.conf"
-    std::string config_string_;
+    std::string config_;
 };
 
 } // namespace grn

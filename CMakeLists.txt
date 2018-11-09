@@ -6,10 +6,6 @@ project(gerene
 include(GNUInstallDirs)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(Boost_NO_BOOST_CMAKE ON)
-find_package(Boost REQUIRED COMPONENTS program_options)
-message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
-
 find_package(wtl 0.7.3)
 find_package(sfmt 0.7.1)
 
@@ -45,7 +41,7 @@ target_include_directories(${PROJECT_NAME} INTERFACE
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
-target_link_libraries(${PROJECT_NAME} PRIVATE wtl::wtl wtl::sfmt Boost::program_options)
+target_link_libraries(${PROJECT_NAME} PRIVATE wtl::wtl wtl::sfmt)
 
 add_executable(${PROJECT_NAME}-exe main.cpp)
 target_link_libraries(${PROJECT_NAME}-exe PRIVATE ${PROJECT_NAME})

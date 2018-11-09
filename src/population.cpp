@@ -7,26 +7,10 @@
 #include <wtl/iostr.hpp>
 #include <wtl/random.hpp>
 #include <sfmt.hpp>
-#include <boost/program_options.hpp>
 
 #include <iostream>
 
 namespace grn {
-
-//! Program options
-/*! @ingroup params
-    @return Program options description
-
-    Command line option | Symbol         | Variable
-    ------------------- | -------------- | -------------------------------
-*/
-boost::program_options::options_description Population::options_desc() {
-    namespace po = boost::program_options;
-    po::options_description desc{"Population"};
-    desc.add_options()
-    ;
-    return desc;
-}
 
 Population::Population(const size_t n)
 : individuals_(n) {HERE;
