@@ -14,5 +14,11 @@ configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/config.cpp @ONLY
 )
 
-file(GLOB srcfiles *.cpp)
-target_sources(${PROJECT_NAME} PRIVATE ${srcfiles})
+cmake_policy(SET CMP0076 NEW)
+target_sources(${PROJECT_NAME} PRIVATE
+  config.cpp
+  gene.cpp
+  individual.cpp
+  population.cpp
+  program.cpp
+)
