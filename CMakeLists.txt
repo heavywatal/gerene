@@ -22,7 +22,7 @@ set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
 
 find_package(wtl 0.8.4)
-find_package(clippson 0.8.1)
+find_package(clippson 0.8.2)
 find_package(sfmt 0.7.2)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
