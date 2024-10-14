@@ -3,9 +3,11 @@ project(gerene
   VERSION 0.1.0
   LANGUAGES CXX)
 
+cmake_policy(SET CMP0076 NEW)
 set(CMAKE_VERBOSE_MAKEFILE ON)
+include(CMakePrintHelpers)
 include(GNUInstallDirs)
-message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
+cmake_print_variables(CMAKE_INSTALL_PREFIX)
 if(${CMAKE_INSTALL_PREFIX} MATCHES linuxbrew)
   set(CMAKE_INSTALL_LIBDIR lib)
 endif()
@@ -13,9 +15,8 @@ endif()
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
-message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+cmake_print_variables(CMAKE_BUILD_TYPE)
 set(CMAKE_CXX_FLAGS_DEV "-O2 -g")
-add_compile_options(-march=native -Wall -Wextra -pedantic)
 
 set(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
@@ -30,7 +31,12 @@ add_library(${PROJECT_NAME})
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 add_subdirectory(src)
 
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+target_compile_options(${PROJECT_NAME} INTERFACE
+  -Wall -Wextra -pedantic
+  $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:-march=native>
+  $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},arm64>:-march=armv8.3-a+sha3>
+)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES
   CXX_STANDARD_REQUIRED ON
   CXX_EXTENSIONS OFF
