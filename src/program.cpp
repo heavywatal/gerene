@@ -12,16 +12,16 @@
 #include <wtl/debug.hpp>
 #include <wtl/iostr.hpp>
 #include <wtl/chrono.hpp>
-#include <wtl/filesystem.hpp>
 #include <wtl/zlib.hpp>
 #include <sfmt.hpp>
 #include <clippson/clippson.hpp>
 
 #include <iostream>
+#include <fstream>
 
 namespace grn {
 
-namespace fs = wtl::filesystem;
+namespace fs = std::filesystem;
 
 nlohmann::json VM;
 
@@ -124,11 +124,11 @@ void Program::run() {HERE;
 void Program::main() {HERE;
     Population pop(6);
     std::cout << pop << std::endl;
-    const auto outdir = VM.at("outdir").get<std::string>();
+    const auto outdir = VM.at("outdir").get<fs::path>();
     if (!outdir.empty()) {
-        DCERR("mkdir && cd to " << outdir << std::endl);
-        wtl::ChDir cd_outdir(outdir, true);
-        wtl::make_ofs("config.json") << config_;
+        const auto config_file = outdir / "config.json";
+        DCERR(config_file << std::endl);
+        std::ofstream(config_file) << config_;
         std::cerr << wtl::iso8601datetime() << std::endl;
     }
 }
