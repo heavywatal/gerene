@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.15)
 project(gerene
   VERSION 0.1.0
   LANGUAGES CXX)
@@ -21,9 +21,9 @@ set(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
 
-find_package(wtl 0.8.4)
-find_package(clippson 0.8.2)
-find_package(sfmt 0.7.2)
+find_package(wtl 0.9.0)
+find_package(clippson 0.8.7)
+find_package(sfmt 0.7.5)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 add_library(${PROJECT_NAME})
