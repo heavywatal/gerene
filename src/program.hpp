@@ -8,8 +8,16 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <stdexcept>
 
 namespace grn {
+
+//! @cond
+class exit_success: public std::logic_error {
+  public:
+    exit_success() noexcept: std::logic_error("") {}
+};
+//! @endcond
 
 /*! @brief Program class
 */

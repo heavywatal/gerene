@@ -28,9 +28,9 @@ nlohmann::json VM;
 //! Options description for general purpose
 inline clipp::group general_options(nlohmann::json* vm) {HERE;
     return (
-      wtl::option(vm, {"h", "help"}, false, "print this help"),
-      wtl::option(vm, {"version"}, false, "print version"),
-      wtl::option(vm, {"v", "verbose"}, false, "verbose output")
+      clippson::option(vm, {"h", "help"}, false, "print this help"),
+      clippson::option(vm, {"version"}, false, "print version"),
+      clippson::option(vm, {"v", "verbose"}, false, "verbose output")
     ).doc("General:");
 }
 
@@ -45,8 +45,8 @@ inline clipp::group general_options(nlohmann::json* vm) {HERE;
 //! Options description for general purpose
 inline clipp::group program_options(nlohmann::json* vm) {HERE;
     return (
-      wtl::option(vm, {"j", "parallel"}, 1u),
-      wtl::option(vm, {"o", "outdir"}, "")
+      clippson::option(vm, {"j", "parallel"}, 1u),
+      clippson::option(vm, {"o", "outdir"}, "")
     ).doc("General:");
 }
 
@@ -59,7 +59,7 @@ inline clipp::group program_options(nlohmann::json* vm) {HERE;
 */
 inline clipp::group individual_options(nlohmann::json* vm, IndividualParams* p) {HERE;
     return (
-      wtl::option(vm, {"V", "genes"}, &p->NUM_GENES)
+      clippson::option(vm, {"V", "genes"}, &p->NUM_GENES)
     ).doc("Individual");
 }
 
@@ -72,7 +72,7 @@ inline clipp::group individual_options(nlohmann::json* vm, IndividualParams* p) 
 */
 inline clipp::group gene_options(nlohmann::json* vm, GeneParams* p) {HERE;
     return (
-      wtl::option(vm, {"L", "cres"}, &p->NUM_CRES)
+      clippson::option(vm, {"L", "cres"}, &p->NUM_CRES)
     ).doc("Gene");
 }
 
@@ -92,8 +92,8 @@ Program::Program(const std::vector<std::string>& arguments) {HERE;
       individual_options(&VM, &individual_params),
       gene_options(&VM, &gene_params)
     );
-    wtl::parse(cli, arguments);
-    auto fmt = wtl::doc_format();
+    clippson::parse(cli, arguments);
+    auto fmt = clippson::doc_format();
     if (vm_local.at("help")) {
         std::cout << "Usage: " << PROJECT_NAME << " [options]\n\n";
         std::cout << clipp::documentation(cli, fmt) << "\n";

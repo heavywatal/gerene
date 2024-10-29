@@ -3,7 +3,7 @@ project(gerene
   VERSION 0.1.0
   LANGUAGES CXX)
 
-cmake_policy(SET CMP0076 NEW)
+cmake_policy(SET CMP0169 OLD)  # 3.28
 set(CMAKE_VERBOSE_MAKEFILE ON)
 include(CMakePrintHelpers)
 include(GNUInstallDirs)
@@ -19,9 +19,9 @@ set(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
 
-find_package(wtl 0.9.0)
-find_package(clippson 0.8.7)
-find_package(sfmt 0.7.5)
+find_package(wtl 0.9.1)
+find_package(clippson 0.8.8)
+find_package(sfmt 0.7.6)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 add_library(${PROJECT_NAME})
@@ -35,7 +35,6 @@ target_compile_options(${PROJECT_NAME} INTERFACE
 )
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES
-  CXX_STANDARD_REQUIRED ON
   CXX_EXTENSIONS OFF
   POSITION_INDEPENDENT_CODE ON
   WINDOWS_EXPORT_ALL_SYMBOLS ON
@@ -76,12 +75,12 @@ install(EXPORT ${PROJECT_NAME}-config
   NAMESPACE ${PROJECT_NAME}::
 )
 
-set(version_file ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake)
+set(version_file ${PROJECT_NAME}-config-version.cmake)
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(${version_file}
   COMPATIBILITY AnyNewerVersion
 )
-install(FILES ${version_file}
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${version_file}
   DESTINATION ${config_destination}
 )
 
