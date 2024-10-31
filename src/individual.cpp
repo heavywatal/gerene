@@ -7,7 +7,6 @@
 #include <wtl/debug.hpp>
 #include <wtl/iostr.hpp>
 #include <wtl/random.hpp>
-#include <sfmt.hpp>
 
 #include <iostream>
 

@@ -13,7 +13,6 @@
 #include <wtl/iostr.hpp>
 #include <wtl/chrono.hpp>
 #include <wtl/zlib.hpp>
-#include <sfmt.hpp>
 #include <clippson/clippson.hpp>
 
 #include <iostream>

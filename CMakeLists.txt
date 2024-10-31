@@ -21,7 +21,6 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH ON)
 
 find_package(wtl 0.9.1)
 find_package(clippson 0.8.8)
-find_package(sfmt 0.7.6)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 add_library(${PROJECT_NAME})
@@ -44,7 +43,6 @@ target_include_directories(${PROJECT_NAME} INTERFACE
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE wtl::wtl clippson::clippson)
-target_link_libraries(${PROJECT_NAME} PRIVATE wtl::sfmt)
 
 option(BUILD_EXECUTABLE "Build executable file" ON)
 if(BUILD_EXECUTABLE)
