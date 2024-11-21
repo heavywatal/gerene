@@ -10,13 +10,12 @@ endif()
 cmake_print_variables(PROJECT_VERSION)
 
 configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/config.cpp.in
-  ${CMAKE_CURRENT_SOURCE_DIR}/config.cpp @ONLY
+  config.cpp.in
+  config.cpp @ONLY
 )
 
-cmake_policy(SET CMP0076 NEW)
 target_sources(${PROJECT_NAME} PRIVATE
-  config.cpp
+  ${CMAKE_CURRENT_BINARY_DIR}/config.cpp
   gene.cpp
   individual.cpp
   population.cpp
