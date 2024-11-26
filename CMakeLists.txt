@@ -1,9 +1,8 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.31)
 project(gerene
   VERSION 0.1.0
   LANGUAGES CXX)
 
-cmake_policy(SET CMP0169 OLD)  # 3.28
 set(CMAKE_VERBOSE_MAKEFILE ON)
 include(CMakePrintHelpers)
 include(GNUInstallDirs)
@@ -17,12 +16,13 @@ set(CMAKE_CXX_FLAGS_DEV "-O2 -g")
 
 find_package(wtl 0.9.2 COMPONENTS zlib)
 find_package(clippson 0.8.8)
+find_package(pcglite 0.2.0)
 
 add_library(${PROJECT_NAME} STATIC)
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 add_subdirectory(src)
 
-target_compile_options(${PROJECT_NAME} INTERFACE
+target_compile_options(${PROJECT_NAME} PUBLIC
   -Wall -Wextra -pedantic
   $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:-march=native>
   $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},arm64>:-march=armv8.3-a+sha3>
