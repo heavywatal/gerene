@@ -14,9 +14,9 @@ endif()
 cmake_print_variables(CMAKE_BUILD_TYPE)
 set(CMAKE_CXX_FLAGS_DEV "-O2 -g")
 
-find_package(wtl 0.9.2 COMPONENTS zlib)
-find_package(clippson 0.8.8)
-find_package(pcglite 0.2.0)
+find_package(wtl 0.10.0 COMPONENTS zlib)
+find_package(clippson 0.8.9)
+find_package(pcglite 0.2.1)
 
 add_library(${PROJECT_NAME} STATIC)
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
@@ -25,7 +25,7 @@ add_subdirectory(src)
 target_compile_options(${PROJECT_NAME} PUBLIC
   -Wall -Wextra -pedantic
   $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},x86_64>:-march=native>
-  $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},arm64>:-march=armv8.3-a+sha3>
+  $<$<STREQUAL:${CMAKE_SYSTEM_PROCESSOR},arm64>:-march=armv8.4-a>
 )
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
