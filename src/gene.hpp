@@ -6,6 +6,7 @@
 #define GRN_GENE_HPP_
 
 #include <iosfwd>
+#include <vector>
 #include <unordered_map>
 
 namespace grn {
